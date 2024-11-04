@@ -29,4 +29,5 @@ jobs:
           do
              echo "Deleting $tag_to_delete"
              git push -v --delete origin "$tag_to_delete"
+             gh release delete -y "$tag_to_delete"
           done
