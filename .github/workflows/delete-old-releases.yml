@@ -1,0 +1,13 @@
+name: Delete old releases
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          git tag --sort=-v:refname | grep nightly- | tail -n+3 | xargs git tag -d
