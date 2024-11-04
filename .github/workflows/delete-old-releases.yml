@@ -12,6 +12,7 @@ jobs:
           fetch-tags: true
 
       - run: |
+          git tag --sort=-v:refname
           git tag --sort=-v:refname | grep nightly- | tail -n+2 | tail -n 1
           
           tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+2 | tail -n 1)
