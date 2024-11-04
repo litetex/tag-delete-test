@@ -10,4 +10,4 @@ jobs:
       - uses: actions/checkout@v4
 
       - run: |
-          git tag --sort=-v:refname | grep nightly- | tail -n+3 | xargs git tag -d
+          git tag --sort=-v:refname | grep nightly- | tail -n+3 | xargs -n 1 git push -v --delete origin
