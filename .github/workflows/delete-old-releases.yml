@@ -16,7 +16,8 @@ jobs:
       - name: Fetch tags
         run: git fetch --prune --unshallow --tags
 
-      - run: |
+      - name: Delete old releases if required
+        run: |
           tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+3 | tail -n 1)
 
           if (( ${tags_to_delete[@]} )); then
@@ -25,9 +26,11 @@ jobs:
             do
                echo "Deleting $tag_to_delete"
                git push -v --delete origin "$tag_to_delete"
-               gh release delete -y "$tag_to_delete"
+               gh release delete -y "$tag_to_delete" || true
             done
             exit 0
           fi
+        env:
+          GH_TOKEN: ${{ github.token }}
           
           
