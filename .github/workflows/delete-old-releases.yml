@@ -17,10 +17,13 @@ jobs:
         run: git fetch --prune --unshallow --tags
 
       - run: |
-          git tag --sort=-v:refname
-          git tag --sort=-v:refname | grep nightly- | tail -n+2 | tail -n 1
+          tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+3 | tail -n 1)
+
+          if (( ${#tags_to_delete[@]} )); then
+            echo "Nothing to delete"
+            exit 0
+          fi
           
-          tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+2 | tail -n 1)
           echo "Will delete ${tags_to_delete[*]}"
           for tag_to_delete in "${tags_to_delete[@]}"
           do
