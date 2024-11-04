@@ -12,7 +12,9 @@ jobs:
           fetch-tags: true
 
       - run: |
-          tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+3 | tail -n 1)
+          git tag --sort=-v:refname | grep nightly- | tail -n+2 | tail -n 1
+          
+          tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+2 | tail -n 1)
           echo "Will delete ${tags_to_delete[*]}"
           for tag_to_delete in "${tags_to_delete[@]}"
           do
