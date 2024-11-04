@@ -8,6 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       - run: |
-          git tag --sort=-v:refname | grep nightly- | tail -n+3 | xargs -n 1 git push -v --delete origin
+          tags_to_delete=$(git tag --sort=-v:refname | grep nightly- | tail -n+3 | tail -n 1)
+          echo "Will delete ${tags_to_delete[*]}"
+          for tag_to_delete in "${tags_to_delete[@]}"
+          do
+             echo "Deleting $tag_to_delete"
+             git push -v --delete origin "$tag_to_delete"
+          done
